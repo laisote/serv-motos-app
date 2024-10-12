@@ -1,8 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, Button, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; //Hook para navegação
+
 const logoImage = require("../assets/brand-v2.png");
 
 export default function WelcomeScreen() {
+
+    const navigation = useNavigation(); // Acesso à navegação
     return (
         <View style={styles.container}>
             <Image source={logoImage} style={styles.logo} />
@@ -22,7 +26,7 @@ export default function WelcomeScreen() {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={[styles.button, styles.loginButton]}
-                        onPress={() => alert("Navegar para a tela de login")}
+                        onPress={() => navigation.navigate("Login")} // Navegar para a tela de login
                     >
                         <Text style={styles.buttonText}>Login</Text>
                     </TouchableOpacity>
