@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../app/firebaseConfig';
 
@@ -13,6 +13,7 @@ export default function LoginScreen() {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 console.log('Usuário logado:', userCredential.user);
+                Alert.alert('Login', 'Usuário logado com sucesso!');
                 // Redirecionar ou fazer algo após o login
             })
             .catch((error) => {
@@ -23,21 +24,21 @@ export default function LoginScreen() {
     return (
         <View style={StyleSheet.container}>
             <TextInput
-                styles={styles.input}
+                style={styles.input}
                 placeholder="Email"
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
             />
             <TextInput
-                styles={styles.input}
+                style={styles.input}
                 placeholder="Senha"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
             />
             {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
-            <Button title="Login" onPress={handleLogin} />
+            <Button title="Entrar" onPress={handleLogin} />
         </View>
     );
 }
