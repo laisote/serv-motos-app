@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../app/firebaseConfig';
 
@@ -8,13 +9,14 @@ export default function LoginScreen() {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
+    const navigation = useNavigation();
 
     const handleLogin = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 console.log('Usuário logado:', userCredential.user);
-                Alert.alert('Login', 'Usuário logado com sucesso!');
-                // Redirecionar ou fazer algo após o login
+                // Redirecionar para a tela principal
+                navigation.navigate('Home');
             })
             .catch((error) => {
                 setErrorMessage(error.message);

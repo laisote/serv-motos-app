@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { StatusBar } from 'react-native';
+
 
 const bikeImage = require("../assets/yamaha-fazer-250-abs.webp");
 const plateImage = require("../assets/placa_modelo_moto.png");
@@ -16,7 +18,7 @@ export default function HomeScreen() {
                 <FontAwesome name="user-circle" size={28} color="black" />
             </View>
 
-            {/ Seção da Moto */}
+            {/* Seção da Moto */}
             <View style={styles.bikeInfo}>
                 <Image
                     source={bikeImage}
@@ -35,16 +37,16 @@ export default function HomeScreen() {
             <Text style={styles.greeting}>Olá, André! Tudo certo para mais um rolê?</Text>
 
             {/* Botões de navegação */}
-            <TouchableOpacity syle={styles.button}>
+            <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>Minha moto</Text>
             </TouchableOpacity>
-            <TouchableOpacity syle={styles.button}>
+            <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>Manutenção</Text>
             </TouchableOpacity>
-            <TouchableOpacity syle={styles.button}>
+            <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>Documentação</Text>
             </TouchableOpacity>
-            <TouchableOpacity syle={styles.button}>
+            <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>S.O.S</Text>
             </TouchableOpacity>
         </ScrollView>
@@ -61,7 +63,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 50,
+        paddingTop: StatusBar.currentHeight || 38,
     },
     logo: {
         fontSize: 20,
@@ -82,18 +85,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     bikeModel: {
-        fontSize: 18,
+        fontSize: 26,
         fontWeight: 'bold',
     },
     plateImage: {
-        width: 80,
-        height: 60,
+        width: 110,
+        height: 90,
         marginTop: 10,
     },
     greeting: {
-        fontSize: 18,
+        fontSize: 27,
         fontWeight: 'bold',
-        marginBottom: 20,
+        marginBottom: 25,
+        marginTop: 18,
     },
     button: {
         backgroundColor: 'black',
@@ -103,7 +107,8 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: 'white',
+        fontWeight: 'bold',
         textAlign: 'center',
-        fontSize: 16,
+        fontSize: 20,
     },
 });
