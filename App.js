@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from './screens/WelcomeScreen';
 import LoginScreen from './screens/LoginScreen';
+import HomeScreen from "./screens/HomeScreen";
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,12 @@ export default function App() {
           name="Login"
           component={LoginScreen}
           options={{ title: 'Login' }}
+        />
+        {/* Tela principal */}
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ headerShown: false }} // esconder o cabeçalho
         />
       </Stack.Navigator>
     </NavigationContainer>
