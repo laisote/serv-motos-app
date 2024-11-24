@@ -62,27 +62,26 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#f5f5f5',
     },
     header: {
         backgroundColor: '#FF0000',
         paddingTop: StatusBar.currentHeight || 60,
-        paddingBottom: 15,
+        paddingBottom: 20,
         paddingHorizontal: 20,
     },
     logo: {
         color: '#fff',
-        fontSize: 36,
-
+        fontSize: 30,
         fontWeight: 'bold',
     },
     content: {
         flex: 1,
         padding: 10,
-        backgroundColor: '#fff',
+        backgroundColor: '#f5f5f5',
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
-        marginTop: 18,
+        marginTop: 35,
     },
     bikeSection: {
         flexDirection: 'row',
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     bikeImage: {
-        width: 178,
+        width: 190,
         height: 140,
     },
     bikeInfo: {
@@ -117,7 +116,7 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#000',
         padding: 12,
-        borderRadius: 8,
+        borderRadius: 22,
         width: '100%',
     },
     buttonText: {
@@ -130,7 +129,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 20,
         marginHorizontal: 3,
-        marginBottom: 50,
+        marginBottom: 45,
         padding: 10,
         shadowColor: '#000',
         shadowOffset: {
