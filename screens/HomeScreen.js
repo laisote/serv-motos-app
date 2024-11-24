@@ -1,55 +1,61 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, StatusBar } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { StatusBar } from 'react-native';
-
 
 const bikeImage = require("../assets/yamaha-fazer-250-abs.webp");
 const plateImage = require("../assets/placa_modelo_moto.png");
 
 export default function HomeScreen() {
     return (
-        <ScrollView style={styles.container}>
-
-            {/* Cabeçalho */}
+        <View style={styles.container}>
+            {/* Header */}
             <View style={styles.header}>
-                <FontAwesome name="bars" size={28} color="black" />
-                <Text style={styles.logo}>Serv.Motos</Text>
-                <FontAwesome name="user-circle" size={28} color="black" />
+                <Text style={styles.logo}>Serv.motos</Text>
             </View>
 
-            {/* Seção da Moto */}
-            <View style={styles.bikeInfo}>
-                <Image
-                    source={bikeImage}
-                    style={styles.bikeImage}
-                />
-                <View style={styles.bikeDetails}>
-                    <Text style={styles.bikeModel}>FAZER 250 ABS</Text>
-                    <Image
-                        source={plateImage}
-                        style={styles.plateImage}
-                    />
+            {/* Main Content */}
+            <View style={styles.content}>
+                {/* Bike Section */}
+                <View style={styles.cardContainer}>
+                    <View style={styles.bikeSection}>
+                        <Image
+                            source={bikeImage}
+                            style={styles.bikeImage}
+                            resizeMode="contain"
+                        />
+                        <View style={styles.bikeInfo}>
+                            <Text style={styles.bikeModel}>FAZER 250 ABS</Text>
+                            <Image
+                                source={plateImage}
+                                style={styles.plateImage}
+                                resizeMode="contain"
+                            />
+                        </View>
+                    </View>
+                </View>
+
+                {/* Greeting */}
+                <Text style={styles.greeting}>
+                    Olá, André! Tudo certo para mais um rolê?
+                </Text>
+
+                {/* Navigation Buttons */}
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.buttonText}>Minha moto</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.buttonText}>Manutenção</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.buttonText}>Documentação</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.buttonText}>S.O.S. (resgate)</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
-
-            {/* Saudação */}
-            <Text style={styles.greeting}>Olá, André! Tudo certo para mais um rolê?</Text>
-
-            {/* Botões de navegação */}
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Minha moto</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Manutenção</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Documentação</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>S.O.S</Text>
-            </TouchableOpacity>
-        </ScrollView>
+        </View>
     );
 }
 
@@ -57,58 +63,83 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        padding: 20,
     },
     header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 50,
-        paddingTop: StatusBar.currentHeight || 38,
+        backgroundColor: '#FF0000',
+        paddingTop: StatusBar.currentHeight || 60,
+        paddingBottom: 15,
+        paddingHorizontal: 20,
     },
     logo: {
-        fontSize: 20,
+        color: '#fff',
+        fontSize: 36,
+
         fontWeight: 'bold',
     },
-    bikeInfo: {
+    content: {
+        flex: 1,
+        padding: 10,
+        backgroundColor: '#fff',
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+        marginTop: 18,
+    },
+    bikeSection: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 20,
+        justifyContent: 'space-between',
     },
     bikeImage: {
-        width: 150,
-        height: 150,
-        borderRadius: 10,
+        width: 178,
+        height: 140,
     },
-    bikeDetails: {
-        marginLeft: 20,
+    bikeInfo: {
         alignItems: 'center',
     },
     bikeModel: {
-        fontSize: 26,
+        fontSize: 23,
         fontWeight: 'bold',
+        marginBottom: 10,
     },
     plateImage: {
-        width: 110,
+        width: 190,
         height: 90,
-        marginTop: 10,
     },
     greeting: {
-        fontSize: 27,
+        fontSize: 26,
         fontWeight: 'bold',
-        marginBottom: 25,
-        marginTop: 18,
+        marginBottom: 35,
+        textAlign: 'left',
+    },
+    buttonContainer: {
+        gap: 25,
     },
     button: {
-        backgroundColor: 'black',
-        paddingVertical: 15,
-        borderRadius: 10,
-        marginBottom: 15,
+        backgroundColor: '#000',
+        padding: 12,
+        borderRadius: 8,
+        width: '100%',
     },
     buttonText: {
-        color: 'white',
+        color: '#fff',
+        fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
-        fontSize: 20,
+    },
+    cardContainer: {
+        backgroundColor: '#fff',
+        borderRadius: 20,
+        marginHorizontal: 3,
+        marginBottom: 50,
+        padding: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
 });
+
