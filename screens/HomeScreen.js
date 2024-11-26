@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, StatusBar } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const bikeImage = require("../assets/yamaha-fazer-250-abs.webp");
 const plateImage = require("../assets/placa_modelo_moto.png");
 
 export default function HomeScreen() {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             {/* Header */}
@@ -41,7 +43,10 @@ export default function HomeScreen() {
 
                 {/* Navigation Buttons */}
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => navigation.navigate('Bike')}
+                    >
                         <Text style={styles.buttonText}>Minha moto</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button}>

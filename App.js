@@ -10,6 +10,7 @@ import HomeScreen from "./screens/HomeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import NotificationsScreen from "./screens/NotificationsScreen";
 import SettingsScreen from "./screens/SettingsScreen";
+import BikeScreen from "./screens/BikeScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -70,6 +71,11 @@ export default function App() {
           name="Home"
           component={HomeTabs}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Bike"
+          component={BikeScreen}
+          options={{ title: 'Minha Moto' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
