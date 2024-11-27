@@ -11,11 +11,12 @@ import ProfileScreen from "./screens/ProfileScreen";
 import NotificationsScreen from "./screens/NotificationsScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import BikeScreen from "./screens/BikeScreen";
+import ViewBikeScreen from './screens/ViewBikeScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function HomeTabs() {
+function MainTabs() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -69,12 +70,17 @@ export default function App() {
         />
         <Stack.Screen
           name="Home"
-          component={HomeTabs}
+          component={MainTabs}
           options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Bike"
           component={BikeScreen}
+          options={{ title: 'Minha Moto' }}
+        />
+        <Stack.Screen
+          name="ViewBike"
+          component={ViewBikeScreen}
           options={{ title: 'Minha Moto' }}
         />
       </Stack.Navigator>

@@ -2,12 +2,31 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, StatusBar } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const bikeImage = require("../assets/yamaha-fazer-250-abs.webp");
 const plateImage = require("../assets/placa_modelo_moto.png");
 
 export default function HomeScreen() {
     const navigation = useNavigation();
+
+    const handleMyBikePress = async () => {
+        try {
+            const bikeInfo = await AsyncStorage.getItem('bikeInfo');
+            if (bikeInfo !== null) {
+                // Moto existe, navegar para a tela de visualização
+                navigation.navigate('ViewBike');
+            } else {
+                // Nenhuma moto encontrada, navegar para a tela de cadastro
+                navigation.navigate('Bike');
+            }
+        } catch (error) {
+            console.error('Erro ao verificar informações da moto:', error);
+            // Em caso de erro, navegar para a tela de cadastro por padrão
+            navigation.navigate('Bike');
+        }
+    };
+
     return (
         <View style={styles.container}>
             {/* Header */}
@@ -45,7 +64,7 @@ export default function HomeScreen() {
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => navigation.navigate('Bike')}
+                        onPress={handleMyBikePress}
                     >
                         <Text style={styles.buttonText}>Minha moto</Text>
                     </TouchableOpacity>

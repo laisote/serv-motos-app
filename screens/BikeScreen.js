@@ -1,162 +1,156 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-export default function BikeScreen({ navigation }) {
+export default function BikeScreen() {
+    const navigation = useNavigation();
+    const route = useRoute();
     const [bikeInfo, setBikeInfo] = useState({
-        modelo: '',
-        ano: '',
         placa: '',
+        marca: '',
+        modelo: '',
         cor: '',
-        proprietario: '',
-        dataAquisicao: new Date(),
-        dataUltimaRevisao: new Date(),
-        dataUltimaTrocaOleo: new Date(),
-    });
-
-    const [showDatePicker, setShowDatePicker] = useState({
-        aquisicao: false,
-        revisao: false,
-        trocaOleo: false,
+        anoFabricacao: '',
+        anoModelo: '',
+        dataPrimeiraCompra: '',
+        kmAtual: '',
     });
 
     useEffect(() => {
-        loadBikeInfo();
-    }, []);
-
-    const loadBikeInfo = async () => {
-        try {
-            const savedBikeInfo = await AsyncStorage.getItem('bikeInfo');
-            if (savedBikeInfo !== null) {
-                const parsedInfo = JSON.parse(savedBikeInfo);
-                // Convert date strings back to Date objects
-                ['dataAquisicao', 'dataUltimaRevisao', 'dataUltimaTrocaOleo'].forEach(dateField => {
-                    if (parsedInfo[dateField]) {
-                        parsedInfo[dateField] = new Date(parsedInfo[dateField]);
-                    }
-                });
-                setBikeInfo(parsedInfo);
-            }
-        } catch (error) {
-            console.error('Erro ao carregar informações da moto:', error);
+        if (route.params?.bikeInfo) {
+            setBikeInfo(route.params.bikeInfo);
         }
-    };
+    }, [route.params?.bikeInfo]);
 
-    const saveBikeInfo = async () => {
+    const handleSave = async () => {
         try {
             await AsyncStorage.setItem('bikeInfo', JSON.stringify(bikeInfo));
-            alert('Informações da moto salvas com sucesso!');
-            navigation.goBack();
+            Alert.alert('Sucesso', 'Informações da moto atualizadas com sucesso!', [
+                { text: 'OK', onPress: () => navigation.navigate('ViewBike') }
+            ]);
         } catch (error) {
             console.error('Erro ao salvar informações da moto:', error);
-            alert('Erro ao salvar informações. Tente novamente.');
+            Alert.alert('Erro', 'Não foi possível salvar as informações da moto.');
         }
-    };
-
-    const handleDateChange = (event, selectedDate, field) => {
-        setShowDatePicker({ ...showDatePicker, [field]: false });
-        if (selectedDate) {
-            setBikeInfo({ ...bikeInfo, [field]: selectedDate });
-        }
-    };
-
-    const formatDate = (date) => {
-        if (date instanceof Date) {
-            return date.toLocaleDateString();
-        }
-        return 'Data não definida';
     };
 
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.title}>Informações da Moto</Text>
+            <Text style={styles.title}>{route.params?.bikeInfo ? 'Atualizar Moto' : 'Inclusão de Moto'}</Text>
 
-            <TextInput
-                style={styles.input}
-                placeholder="Modelo"
-                value={bikeInfo.modelo}
-                onChangeText={(text) => setBikeInfo({ ...bikeInfo, modelo: text })}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Ano"
-                value={bikeInfo.ano}
-                onChangeText={(text) => setBikeInfo({ ...bikeInfo, ano: text })}
-                keyboardType="numeric"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Placa"
-                value={bikeInfo.placa}
-                onChangeText={(text) => setBikeInfo({ ...bikeInfo, placa: text })}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Cor"
-                value={bikeInfo.cor}
-                onChangeText={(text) => setBikeInfo({ ...bikeInfo, cor: text })}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Proprietário"
-                value={bikeInfo.proprietario}
-                onChangeText={(text) => setBikeInfo({ ...bikeInfo, proprietario: text })}
-            />
+            <View style={styles.inputContainer}>
+                <MaterialCommunityIcons name="card-text-outline" size={24} color="black" />
+                <View style={styles.inputWrapper}>
+                    <Text style={styles.label}>Placa</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="ABC-1234"
+                        value={bikeInfo.placa}
+                        onChangeText={(text) => setBikeInfo({ ...bikeInfo, placa: text })}
+                    />
+                </View>
+            </View>
 
-            <TouchableOpacity
-                style={styles.dateButton}
-                onPress={() => setShowDatePicker({ ...showDatePicker, dataAquisicao: true })}
-            >
-                <Text style={styles.dateButtonText}>
-                    Data de Aquisição: {formatDate(bikeInfo.dataAquisicao)}
-                </Text>
-            </TouchableOpacity>
-            {showDatePicker.dataAquisicao && (
-                <DateTimePicker
-                    value={bikeInfo.dataAquisicao || new Date()}
-                    mode="date"
-                    display="default"
-                    onChange={(event, selectedDate) => handleDateChange(event, selectedDate, 'dataAquisicao')}
-                />
-            )}
+            <View style={styles.inputContainer}>
+                <MaterialCommunityIcons name="engine" size={24} color="black" />
+                <View style={styles.inputWrapper}>
+                    <Text style={styles.label}>Marca</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Ex: Honda"
+                        value={bikeInfo.marca}
+                        onChangeText={(text) => setBikeInfo({ ...bikeInfo, marca: text })}
+                    />
+                </View>
+            </View>
 
-            <TouchableOpacity
-                style={styles.dateButton}
-                onPress={() => setShowDatePicker({ ...showDatePicker, dataUltimaRevisao: true })}
-            >
-                <Text style={styles.dateButtonText}>
-                    Data da Última Revisão: {formatDate(bikeInfo.dataUltimaRevisao)}
-                </Text>
-            </TouchableOpacity>
-            {showDatePicker.dataUltimaRevisao && (
-                <DateTimePicker
-                    value={bikeInfo.dataUltimaRevisao || new Date()}
-                    mode="date"
-                    display="default"
-                    onChange={(event, selectedDate) => handleDateChange(event, selectedDate, 'dataUltimaRevisao')}
-                />
-            )}
+            <View style={styles.inputContainer}>
+                <MaterialCommunityIcons name="motorbike" size={24} color="black" />
+                <View style={styles.inputWrapper}>
+                    <Text style={styles.label}>Modelo</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Ex: CB 300"
+                        value={bikeInfo.modelo}
+                        onChangeText={(text) => setBikeInfo({ ...bikeInfo, modelo: text })}
+                    />
+                </View>
+            </View>
 
-            <TouchableOpacity
-                style={styles.dateButton}
-                onPress={() => setShowDatePicker({ ...showDatePicker, dataUltimaTrocaOleo: true })}
-            >
-                <Text style={styles.dateButtonText}>
-                    Data da Última Troca de Óleo: {formatDate(bikeInfo.dataUltimaTrocaOleo)}
-                </Text>
-            </TouchableOpacity>
-            {showDatePicker.dataUltimaTrocaOleo && (
-                <DateTimePicker
-                    value={bikeInfo.dataUltimaTrocaOleo || new Date()}
-                    mode="date"
-                    display="default"
-                    onChange={(event, selectedDate) => handleDateChange(event, selectedDate, 'dataUltimaTrocaOleo')}
-                />
-            )}
+            <View style={styles.inputContainer}>
+                <MaterialCommunityIcons name="palette" size={24} color="black" />
+                <View style={styles.inputWrapper}>
+                    <Text style={styles.label}>Cor</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Ex: Vermelho"
+                        value={bikeInfo.cor}
+                        onChangeText={(text) => setBikeInfo({ ...bikeInfo, cor: text })}
+                    />
+                </View>
+            </View>
 
-            <TouchableOpacity style={styles.saveButton} onPress={saveBikeInfo}>
-                <Text style={styles.saveButtonText}>Salvar Informações</Text>
+            <View style={styles.rowContainer}>
+                <View style={[styles.inputContainer, styles.halfWidth]}>
+                    <FontAwesome5 name="industry" size={24} color="black" />
+                    <View style={styles.inputWrapper}>
+                        <Text style={styles.label}>Ano Fab.</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="YYYY"
+                            value={bikeInfo.anoFabricacao}
+                            onChangeText={(text) => setBikeInfo({ ...bikeInfo, anoFabricacao: text })}
+                            keyboardType="numeric"
+                        />
+                    </View>
+                </View>
+
+                <View style={[styles.inputContainer, styles.halfWidth]}>
+                    <MaterialCommunityIcons name="calendar" size={24} color="black" />
+                    <View style={styles.inputWrapper}>
+                        <Text style={styles.label}>Ano Mod.</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="YYYY"
+                            value={bikeInfo.anoModelo}
+                            onChangeText={(text) => setBikeInfo({ ...bikeInfo, anoModelo: text })}
+                            keyboardType="numeric"
+                        />
+                    </View>
+                </View>
+            </View>
+
+            <View style={styles.inputContainer}>
+                <MaterialCommunityIcons name="calendar-check" size={24} color="black" />
+                <View style={styles.inputWrapper}>
+                    <Text style={styles.label}>Data Primeira Compra</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="DD/MM/YYYY"
+                        value={bikeInfo.dataPrimeiraCompra}
+                        onChangeText={(text) => setBikeInfo({ ...bikeInfo, dataPrimeiraCompra: text })}
+                    />
+                </View>
+            </View>
+
+            <View style={styles.inputContainer}>
+                <MaterialCommunityIcons name="speedometer" size={24} color="black" />
+                <View style={styles.inputWrapper}>
+                    <Text style={styles.label}>Km Atual</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Ex: 5000"
+                        value={bikeInfo.kmAtual}
+                        onChangeText={(text) => setBikeInfo({ ...bikeInfo, kmAtual: text })}
+                        keyboardType="numeric"
+                    />
+                </View>
+            </View>
+
+            <TouchableOpacity style={styles.button} onPress={handleSave}>
+                <Text style={styles.buttonText}>{route.params?.bikeInfo ? 'Atualizar' : 'Cadastrar'}</Text>
             </TouchableOpacity>
         </ScrollView>
     );
@@ -165,8 +159,8 @@ export default function BikeScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#fff',
         padding: 20,
-        backgroundColor: '#f5f5f5',
     },
     title: {
         fontSize: 24,
@@ -174,31 +168,46 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         textAlign: 'center',
     },
-    input: {
-        backgroundColor: 'white',
-        paddingHorizontal: 15,
-        paddingVertical: 10,
-        borderRadius: 5,
-        marginBottom: 10,
-    },
-    dateButton: {
-        backgroundColor: 'white',
-        padding: 15,
-        borderRadius: 5,
-        marginBottom: 10,
-    },
-    dateButtonText: {
-        color: 'black',
-    },
-    saveButton: {
-        backgroundColor: 'red',
-        padding: 15,
-        borderRadius: 5,
+    inputContainer: {
+        flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 20,
+        backgroundColor: '#F5F5F5',
+        borderRadius: 10,
+        padding: 12,
+        marginBottom: 16,
     },
-    saveButtonText: {
-        color: 'white',
+    inputWrapper: {
+        flex: 1,
+        marginLeft: 12,
+    },
+    label: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    input: {
+        fontSize: 16,
+        color: '#666',
+        paddingVertical: 4,
+    },
+    rowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        gap: 16,
+    },
+    halfWidth: {
+        flex: 1,
+    },
+    button: {
+        backgroundColor: '#B22222',
+        borderRadius: 10,
+        padding: 16,
+        alignItems: 'center',
+        marginTop: 24,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
         fontWeight: 'bold',
     },
 });
