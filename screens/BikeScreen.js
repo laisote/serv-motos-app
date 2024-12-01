@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     button: {
-        backgroundColor: '#B22222',
+        backgroundColor: 'red',
         borderRadius: 10,
         padding: 16,
         alignItems: 'center',

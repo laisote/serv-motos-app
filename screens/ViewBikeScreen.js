@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
         marginTop: 4,
     },
     plateContainer: {
-        backgroundColor: '#B22222',
+        backgroundColor: 'red',
         alignSelf: 'flex-start',
         padding: 8,
         borderRadius: 5,
@@ -197,12 +197,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginLeft: 10,
         borderBottomWidth: 1,
-        borderBottomColor: '#B22222',
+        borderBottomColor: 'red',
         paddingBottom: 5,
         minWidth: 100,
     },
     updateButton: {
-        backgroundColor: '#B22222',
+        backgroundColor: 'red',
         padding: 10,
         borderRadius: 5,
     },
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     updateDataButton: {
-        backgroundColor: '#B22222',
+        backgroundColor: 'red',
         padding: 15,
         margin: 20,
         borderRadius: 5,
