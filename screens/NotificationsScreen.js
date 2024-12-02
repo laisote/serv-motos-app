@@ -4,31 +4,50 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const NotificationsScreen = () => {
-    const [pendingServices, setPendingServices] = useState([]);
+    const [pendingItems, setPendingItems] = useState([]);
 
     useEffect(() => {
-        loadPendingServices();
+        loadPendingItems();
     }, []);
 
-    const loadPendingServices = async () => {
+    const loadPendingItems = async () => {
         try {
             const savedServices = await AsyncStorage.getItem('maintenanceServices');
+            const savedDocuments = await AsyncStorage.getItem('bikeDocuments');
+
+            let pendingServices = [];
+            let pendingDocuments = [];
+
             if (savedServices) {
                 const allServices = JSON.parse(savedServices);
-                const pending = allServices.filter(service => service.status === 'pendente');
-                setPendingServices(pending);
+                pendingServices = allServices.filter(service => service.status === 'pendente')
+                    .map(service => ({ ...service, type: 'service' }));
             }
+
+            if (savedDocuments) {
+                const allDocuments = JSON.parse(savedDocuments);
+                pendingDocuments = allDocuments.filter(doc => doc.status === 'pendente')
+                    .map(doc => ({ ...doc, type: 'document' }));
+            }
+
+            setPendingItems([...pendingServices, ...pendingDocuments]);
         } catch (error) {
-            console.error('Erro ao carregar serviços pendentes:', error);
+            console.error('Erro ao carregar itens pendentes:', error);
         }
     };
 
     const renderNotificationItem = ({ item }) => (
         <View style={styles.notificationItem}>
-            <MaterialCommunityIcons name="alert-circle" size={24} color="#FFA500" />
+            <MaterialCommunityIcons
+                name={item.type === 'service' ? 'wrench' : 'file-document'}
+                size={24}
+                color="#FFA500"
+            />
             <View style={styles.notificationContent}>
                 <Text style={styles.notificationTitle}>{item.title}</Text>
-                <Text style={styles.notificationDate}>Data prevista: {item.nextDate}</Text>
+                <Text style={styles.notificationDate}>
+                    {item.type === 'service' ? `Data prevista: ${item.nextDate}` : `Vencimento: ${item.dueDate}`}
+                </Text>
             </View>
         </View>
     );
@@ -36,14 +55,14 @@ const NotificationsScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Notificações</Text>
-            {pendingServices.length > 0 ? (
+            {pendingItems.length > 0 ? (
                 <FlatList
-                    data={pendingServices}
+                    data={pendingItems}
                     renderItem={renderNotificationItem}
-                    keyExtractor={item => item.id.toString()}
+                    keyExtractor={item => `${item.type}-${item.id}`}
                 />
             ) : (
-                <Text style={styles.emptyMessage}>Não há serviços pendentes no momento.</Text>
+                <Text style={styles.emptyMessage}>Não há itens pendentes no momento.</Text>
             )}
         </View>
     );

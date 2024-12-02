@@ -13,6 +13,7 @@ import SettingsScreen from "./screens/SettingsScreen";
 import BikeScreen from "./screens/BikeScreen";
 import ViewBikeScreen from './screens/ViewBikeScreen';
 import MaintenanceScreen from './screens/MaintenanceScreen';
+import DocumentationScreen from './screens/DocumentationScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -77,6 +78,11 @@ function MainStack() {
         name="Maintenance"
         component={MaintenanceScreen}
         options={{ title: 'Manutenção' }}
+      />
+      <Stack.Screen
+        name="Documentation"
+        component={DocumentationScreen}
+        options={{ title: 'Documentação' }}
       />
     </Stack.Navigator>
   );
