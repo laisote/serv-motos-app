@@ -14,29 +14,23 @@ export default function HomeScreen() {
         try {
             const bikeInfo = await AsyncStorage.getItem('bikeInfo');
             if (bikeInfo !== null) {
-                // Moto existe, navegar para a tela de visualização
                 navigation.navigate('ViewBike');
             } else {
-                // Nenhuma moto encontrada, navegar para a tela de cadastro
                 navigation.navigate('Bike');
             }
         } catch (error) {
             console.error('Erro ao verificar informações da moto:', error);
-            // Em caso de erro, navegar para a tela de cadastro por padrão
             navigation.navigate('Bike');
         }
     };
 
     return (
         <View style={styles.container}>
-            {/* Header */}
             <View style={styles.header}>
                 <Text style={styles.logo}>Serv.motos</Text>
             </View>
 
-            {/* Main Content */}
             <View style={styles.content}>
-                {/* Bike Section */}
                 <View style={styles.cardContainer}>
                     <View style={styles.bikeSection}>
                         <Image
@@ -55,12 +49,10 @@ export default function HomeScreen() {
                     </View>
                 </View>
 
-                {/* Greeting */}
                 <Text style={styles.greeting}>
                     Olá, André! Tudo certo para mais um rolê?
                 </Text>
 
-                {/* Navigation Buttons */}
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity
                         style={styles.button}
@@ -68,7 +60,10 @@ export default function HomeScreen() {
                     >
                         <Text style={styles.buttonText}>Minha moto</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => navigation.navigate('Maintenance')}
+                    >
                         <Text style={styles.buttonText}>Manutenção</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button}>

@@ -12,6 +12,7 @@ import NotificationsScreen from "./screens/NotificationsScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import BikeScreen from "./screens/BikeScreen";
 import ViewBikeScreen from './screens/ViewBikeScreen';
+import MaintenanceScreen from './screens/MaintenanceScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -23,7 +24,7 @@ function MainTabs() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'HomeTab') {
+          if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
@@ -40,7 +41,7 @@ function MainTabs() {
       })}
     >
       <Tab.Screen
-        name="HomeTab"
+        name="Home"
         component={HomeScreen}
         options={{
           headerShown: false,
@@ -54,35 +55,40 @@ function MainTabs() {
   );
 }
 
+function MainStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="MainTabs"
+        component={MainTabs}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Bike"
+        component={BikeScreen}
+        options={{ title: 'Minha Moto' }}
+      />
+      <Stack.Screen
+        name="ViewBike"
+        component={ViewBikeScreen}
+        options={{ title: 'Minha Moto' }}
+      />
+      <Stack.Screen
+        name="Maintenance"
+        component={MaintenanceScreen}
+        options={{ title: 'Manutenção' }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Welcome"
-          component={WelcomeScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ title: 'Login' }}
-        />
-        <Stack.Screen
-          name="Home"
-          component={MainTabs}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Bike"
-          component={BikeScreen}
-          options={{ title: 'Minha Moto' }}
-        />
-        <Stack.Screen
-          name="ViewBike"
-          component={ViewBikeScreen}
-          options={{ title: 'Minha Moto' }}
-        />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Main" component={MainStack} />
       </Stack.Navigator>
     </NavigationContainer>
   );
